@@ -66,14 +66,14 @@ Retries must be safe.
 - Fast, isolated, deterministic
 - No DB/network
 - Mock external dependencies
-- Freeze time
+- Freeze time in tests (mock current time)
 
 ### Integration tests
 - Validate real boundaries:
-  - DB
-  - APIs
-  - serialization
-  - queues/filesystems (when relevant)
+  - Database queries
+  - API interactions
+  - Serialization/deserialization
+  - External systems (queues, files, caches when relevant)
 - Allowed to be slower
 - Should not be unnecessarily brittle
 
@@ -96,7 +96,8 @@ Retries must be safe.
 
 ## Concurrency
 
-- Prefer synchronous unless justified
+- Prefer synchronous by default
+  - Use async when it materially improves performance, throughput, or user experience.
 - Retries require idempotency
 - Handle duplicates explicitly
 - Use queues only when beneficial
@@ -105,9 +106,9 @@ Retries must be safe.
 
 ## Logging
 
-- Log meaningful boundaries, not everything
-- Log inputs/outputs (except sensitive/huge payloads)
-- Avoid noise in hot paths
+- Log inputs/outputs at system boundaries (unless large/sensitive)
+- Use audit storage for large payloads
+- Avoid verbose logging inside loops or frequently executed helper functions
 - Never log secrets
 
 ---
@@ -131,8 +132,9 @@ Only grant required access.
 
 - Prefer percentage or allowlist rollout
 - Every flag must have:
-  - a ticket OR
-  - a clear purpose + removal condition
+  - purpose
+  - removal condition
+  - (optional) ticket reference
 - Remove flags after rollout
 
 ---

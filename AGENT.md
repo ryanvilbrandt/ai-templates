@@ -4,9 +4,16 @@ Purpose: Repo-specific source of truth for LLMs and developers.
 
 After reading this file, ask the user clarifying questions to fill out the information below and specify what type of project this is. Update this file to be a long-term description of this repo, and guidance to future LLMs based on the user's answers.
 
-This file should be updated regularly as the project's requirements, constraints, and structure change.
+Update this file regularly as the project's requirements, constraints, and structure change.
 
 See ENGINEERING_PRINCIPLES.md for further rules to follow and guidance on how to write good code.
+
+## Update Behavior (CRITICAL)
+
+- After receiving answers to the above questions, UPDATE this file
+- Do not leave placeholders once answers are known
+- Derive the appropriate "LLM Behavior Mode" based on answers
+- Treat this file as the persistent memory of the repo
 
 ---
 
