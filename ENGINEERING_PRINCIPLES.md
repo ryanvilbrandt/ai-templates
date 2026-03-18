@@ -1,5 +1,3 @@
-# ENGINEERING_PRINCIPLES.md
-
 Purpose: Stable, cross-project engineering rules for LLMs and developers.
 
 These are defaults. Repo-specific overrides belong in AGENT.md.
@@ -12,6 +10,10 @@ These are defaults. Repo-specific overrides belong in AGENT.md.
 - Prefer explicitness over implicit behavior
 - Prefer debuggability over convenience
 - Prefer reversible systems over fragile ones
+
+### Surface necessary complexity explicitly
+
+If the problem is inherently complex, do not oversimplify it. Make complexity visible and well-structured instead of hiding it.
 
 ---
 
@@ -53,7 +55,9 @@ Do not silently recover from unexpected states.
 Use proper chaining (`raise ... from e`).
 
 ### Prefer explicit failures over hidden fallbacks
-Use `.get()` / `getattr()` only when absence is expected.
+Use `.get()` or `getattr(..., default)` only when missing data is an expected case.
+
+If missing data indicates a bug, use direct access so the failure is explicit.
 
 ### Design for idempotency
 Retries must be safe.
@@ -63,21 +67,25 @@ Retries must be safe.
 ## Testing
 
 ### Unit tests
+
 - Fast, isolated, deterministic
 - No DB/network
 - Mock external dependencies
-- Freeze time in tests (mock current time)
+- Freeze time (mock current time instead of using real time)
 
 ### Integration tests
+
 - Validate real boundaries:
-  - Database queries
+  - Database queries and schema assumptions
   - API interactions
   - Serialization/deserialization
   - External systems (queues, files, caches when relevant)
 - Allowed to be slower
 - Should not be unnecessarily brittle
+- Do not run integration tests on every iteration by default unless required by the project
 
 ### Philosophy
+
 - Unit tests validate logic
 - Integration tests validate wiring
 
@@ -89,27 +97,38 @@ Retries must be safe.
 - Avoid destructive deletes
 - Prefer soft deletes
 - Use migrations only
-- Make schemas explicit in code
+- Do not rely on implicit schema assumptions; represent expected structures explicitly in code
 - Enforce uniqueness and idempotency
+- Define schema to enforce data shape (types, required fields, constraints)
 
 ---
 
 ## Concurrency
 
 - Prefer synchronous by default
-  - Use async when it materially improves performance, throughput, or user experience.
-- Retries require idempotency
+- Use async only when it materially improves performance, throughput, or user experience
+- Do not add retries unless the operation is idempotent or otherwise safe to repeat
 - Handle duplicates explicitly
 - Use queues only when beneficial
 
 ---
 
+## Caching
+
+- Use caching only when it provides a clear benefit
+- TTL should be as short as possible, but no shorter
+- Long-lived caches must have a clear reset/invalidation path
+- Consider how stale data affects correctness, not just performance
+
+---
+
 ## Logging
 
-- Log inputs/outputs at system boundaries (unless large/sensitive)
-- Use audit storage for large payloads
+- Log inputs and outputs at important system boundaries (unless large or sensitive)
 - Avoid verbose logging inside loops or frequently executed helper functions
-- Never log secrets
+- Use audit storage for large payloads instead of standard logs
+- Never log secrets or sensitive data
+- Avoid logging entire objects or payloads when they may contain sensitive or high-volume data
 
 ---
 
@@ -118,13 +137,20 @@ Retries must be safe.
 ### Principle of Least Privilege
 Only grant required access.
 
-### Never:
+### Never...
+
 - Embed credentials in code
 - Build SQL via string concatenation
 - Execute shell commands with unsanitized input
 - Trust frontend validation alone
 - Log secrets or tokens
 - Disable TLS checks casually
+
+### Input validation
+
+- Constrain input at the UI when possible
+- Always validate and sanitize input at backend boundaries
+- Return explicit 4xx errors for invalid input
 
 ---
 
@@ -136,14 +162,7 @@ Only grant required access.
   - removal condition
   - (optional) ticket reference
 - Remove flags after rollout
-
----
-
-## Caching
-
-- Use only when beneficial
-- TTL: as short as possible, but no shorter
-- Long-lived caches must have reset path
+- Flags should have an owner or clear context explaining who is responsible for removal
 
 ---
 
@@ -161,6 +180,7 @@ Prefer many small deploys over large ones.
 ## Naming
 
 - Prefer clear, specific names
+- Avoid overly generic names (e.g. data, handler, manager) when a more specific name is practical
 - Avoid unnecessary abbreviations
 - Generic names are a smell, not a blocker
 
@@ -173,4 +193,4 @@ Prefer many small deploys over large ones.
 - High-value docs:
   - API docs
   - README setup + usage
-  - infra references
+  - Infrastructure references
