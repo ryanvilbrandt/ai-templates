@@ -1,6 +1,6 @@
 Purpose: Stable, cross-project engineering rules for LLMs and developers.
 
-These are defaults. Repo-specific overrides belong in AGENT.md.
+These are defaults. Repo-specific overrides belong in AGENTS.md.
 
 ---
 
@@ -194,3 +194,4 @@ Prefer many small deploys over large ones.
   - API docs
   - README setup + usage
   - Infrastructure references
+

@@ -1,6 +1,11 @@
 # ai-templates
-A collection of files to use to give LLMs important structure and guidance about how to write good code. Meant to be dropped directly into a new repo.
+
+A template repository for copy-ready LLM operating docs.
+
+These files are intentionally generic in this repo. Copy them into a target repository, then fill in placeholders there.
 
 ## How To Use
 
-Copy `AGENTS.md` and `ENGINEERING_PRINCIPLES.md` into your repo. Have your AI of choice read and follow the instructions in `AGENTS.md`.
+1. Copy `AGENTS.md` and `docs/` into your target repo.
+2. Have your AI read and follow `AGENTS.md`.
+3. Fill placeholders and select one LLM behavior mode in the target repo.
