@@ -3,4 +3,4 @@ A collection of files to use to give LLMs important structure and guidance about
 
 ## How To Use
 
-Copy `AGENTS.md` and `ENGINEERING_PRINCIPLES.md` into your repo. Have your AI of choice read follow the instructions in `AGENTS.md`.
+Copy `AGENTS.md` and `ENGINEERING_PRINCIPLES.md` into your repo. Have your AI of choice read and follow the instructions in `AGENTS.md`.
