@@ -44,8 +44,7 @@ If a relevant file is missing, create it instead of stuffing too much detail int
 
 Before implementation:
 - Read this file first
-- Read `docs/`
-- Read other supporting docs relevant to the task
+- Read the files in `docs/`
 - Do not begin implementation until Project Context is sufficiently filled out
 - If key fields are missing, ask clarifying questions first
 - If an answer would materially affect architecture, data safety, testing, deployment, or security, do not guess
@@ -54,7 +53,7 @@ Before implementation:
 
 ## Document Update Policy (CRITICAL)
 
-When new information is learned, update the correct file:
+Update the correct file when new information is learned:
 
 - Update `AGENTS.md` when:
   - project context changes
@@ -164,7 +163,7 @@ If answers affect architecture, safety, or data integrity, do not proceed withou
 
 - Write the answers into the appropriate sections of this file
 - Summarize decisions, not just raw answers
-- Remove or replace placeholders once information is known
+- Replace placeholders once information is known
 - If answers imply deeper documentation needs, update or create the correct supporting file
 - If answers imply constraints such as high risk or sensitive data, reflect that in the selected Behavior Mode and in `docs/requirements.md`
 
@@ -197,58 +196,8 @@ If these become complex, move details into `docs/requirements.md`.
 ---
 
 
-## Common LLM Failure Patterns
-
-Be aware of these common mistakes and actively avoid them:
-
-### Over-abstraction
-- Creating abstractions before they are needed
-- Generalizing from a single use case
-- Introducing unnecessary layers or indirection
-
-### Hidden defaults and silent fallbacks
-- Using `.get()` or default values when missing data should be an error
-- Masking bugs instead of surfacing them
-
-### Unrequested behavior
-- Adding "helpful" features or side effects not explicitly asked for
-- Expanding scope beyond the stated task
-
-### Implicit assumptions
-- Assuming schema, data shape, or API behavior without confirmation
-- Failing to state assumptions before implementation
-
-### Boundary violations
-- Mixing concerns across layers (e.g. DB logic in API handlers)
-- Ignoring system boundaries (API, DB, filesystem, queues)
-
-### Overuse of defensive coding
-- Adding guards everywhere instead of understanding expected invariants
-- Making code verbose while hiding real issues
-
-### Logging mistakes
-- Logging too little at important boundaries
-- Logging too much in hot paths
-- Logging sensitive or large payloads
-
-### Async and concurrency misuse
-- Introducing async unnecessarily
-- Ignoring idempotency in retry logic
-- Failing to handle duplicate processing
-
-### Ignoring project context
-- Treating a production system like a script
-- Over-engineering simple tools
-- Under-engineering critical systems
-
-### Incomplete documentation updates
-- Asking good questions but not recording the answers
-- Leaving placeholders instead of updating context
-- Updating code without updating the relevant repo docs
-
----
-
 ## LLM Rules
+
 
 - Do not take high-impact actions automatically
 - Ask clarifying questions when ambiguity affects:
@@ -274,31 +223,10 @@ Be aware of these common mistakes and actively avoid them:
 
 ---
 
-## LLM Code Review Checklist
-
-Before finalizing:
-
-- Are state changes explicit?
-- Are errors fail-fast?
-- Are retries safe and idempotent?
-- Any hidden defaults or silent fallbacks?
-- Are system boundaries respected?
-- Are inputs validated and sanitized?
-- Are important boundaries logged?
-- Are assumptions clearly stated?
-- Is complexity justified (not under- or over-engineered)?
-- Any unnecessary abstraction?
-- Any unintended side effects?
-- Any security risks?
-- Does this match project type and risk level?
-- Did I update the relevant repo docs if I learned something important?
-
----
-
 ## Update Rules (CRITICAL)
 
 - This file is the persistent entry point for repo context
-- Do not silently guess missing context; ask or leave explicit TODOs
+- Do not guess missing context; ask or leave explicit TODOs
 - Prefer updating repo docs over re-explaining context in chat
 - Future LLM sessions should rely on this file first, then the supporting docs
 - Keep this file concise by moving substantial detail into the appropriate docs
